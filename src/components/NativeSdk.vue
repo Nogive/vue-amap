@@ -14,7 +14,7 @@
   </div>
   </template>
 
-  <style>
+  <style scoped>
     .amap-page-container {
       width: 100%;
       height: 300px;

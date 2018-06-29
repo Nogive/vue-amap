@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
   .amap-page-container {
     height: 300px;
     position: relative;

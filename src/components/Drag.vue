@@ -11,7 +11,8 @@
         :center="center"
         :amapManager="amapManager"
         :events="events">
-        <el-amap-circle  vid="circle"
+        <el-amap-circle 
+          vid="circle"
           :center="center" 
           :radius="radius" 
           fill-opacity="0.2"
@@ -29,7 +30,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
   .amap-page-container {
     height: 300px;
   }
@@ -88,6 +89,20 @@
               mode: 'dragMap',
               map: map
           });
+          //定位
+          let geolocation;
+          map.plugin('AMap.Geolocation', function () {
+            geolocation=new AMap.Geolocation({
+              showButton: true,        //显示定位按钮，默认：true
+              showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
+              extensions:'all'
+            })
+            map.addControl(geolocation);
+            geolocation.getCurrentPosition();
+            AMap.event.addListener(geolocation, 'complete', function(data){
+              positionPicker.start();
+            });//返回定位信息
+          })
           positionPicker.on('success', function(positionResult){
             vm.result=positionResult.regeocode.pois;
             vm.address=positionResult.regeocode.formattedAddress;
@@ -96,7 +111,7 @@
           positionPicker.on('fail', function(failResult){
             console.log(failResult)
           })
-          positionPicker.start();
+          // positionPicker.start();
         })
       },
       addRadius(){
