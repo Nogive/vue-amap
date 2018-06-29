@@ -8,7 +8,7 @@
       class="amap-demo">
     </el-amap>
     <div class="toolbar">
-      <button @click="addMarker()">增加 circle</button>
+      <button @click="addCircle()">增加 circle</button>
       <button @click="changeRadius()">更改 range</button>
       <button @click="addInfoWindow()">信息窗体</button>
     </div>
@@ -54,7 +54,7 @@
         }
       },
       methods:{
-        addMarker(){
+        addCircle(){
           let map=amapManager.getMap();
           let circle=new AMap.CircleMarker({
             center: [121.329402,31.228667],
@@ -66,8 +66,8 @@
             fillOpacity:'0.2'
             //map:map   //写法一
           })
-          circle.setMap(map);
-          this.currentCircle=circle; //写法二
+          circle.setMap(map);//写法二
+          this.currentCircle=circle; 
         },
         changeRadius(){
           this.radius+=10;
