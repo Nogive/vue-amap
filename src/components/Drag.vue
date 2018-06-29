@@ -12,7 +12,8 @@
         class="amap-demo" 
         :center="center"
         :amapManager="amapManager"
-        :events="events">
+        :events="events"
+        >
         <el-amap-circle 
           vid="circle"
           :center="center" 
