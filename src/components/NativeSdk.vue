@@ -10,6 +10,7 @@
     <div class="toolbar">
       <button @click="addMarker()">增加 circle</button>
       <button @click="changeRadius()">更改 range</button>
+      <button @click="addInfoWindow()">信息窗体</button>
     </div>
   </div>
   </template>
@@ -32,11 +33,20 @@
           amapManager,
           events: {
             init(o) {
-              let marker = new AMap.Marker({
-                position: [121.329402,31.228667],
-                map:o
-              });
-              //marker.setMap(o);
+              AMapUI.loadUI(['overlay/SimpleMarker'],function(SimpleMarker){
+                const marker=new SimpleMarker({
+                  iconLabel: {
+                    innerHTML: '<i>mm</i>', //设置文字内容
+                    style: {
+                        color: '#fff' //设置文字颜色
+                    }
+                  },
+                  iconStyle: 'green',
+                  map: o,
+                  position: o.getCenter()
+                })
+                //marker.setMap(o);
+              })
             }
           },
           radius:100,
@@ -62,6 +72,16 @@
         changeRadius(){
           this.radius+=10;
           this.currentCircle.setRadius(this.radius);
+        },
+        addInfoWindow(){
+          let map=amapManager.getMap();
+          AMapUI.loadUI(['overlay/SimpleInfoWindow'],function(SimpleInfoWindow){
+            var infoWindow = new SimpleInfoWindow({
+              infoTitle: '<strong>这里是标题</strong>',
+              infoBody: '<p>这里是内容。</p>'
+            });
+            infoWindow.open(map, map.getCenter());
+          })
         }
       }
     };

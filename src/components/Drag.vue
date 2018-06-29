@@ -1,9 +1,11 @@
 <template>
   <div>
     <button @click="addRadius">增加范围</button>
+    <button @click="startSearch">搜索</button>
     <p>{{address}}</p>
     <hr>
     <div class="amap-page-container">
+      <input v-if="toSearch" type="text" class="search-input" id="search">
       <el-amap 
         vid="amap" 
         :zoom="zoom" 
@@ -33,6 +35,15 @@
 <style scoped>
   .amap-page-container {
     height: 300px;
+    position: relative;
+  }
+  .search-input{
+    border: 1px solid red;
+    position: absolute;
+    z-index: 5;
+    width: 80%;
+    left: 10%;
+    padding: 5px;
   }
   .toolbar{
     margin-top: 15px;
@@ -51,6 +62,7 @@
         result:[],
         address:"",
         radius:100,
+        toSearch:false,
         amapManager,
         map:null,
         events:{
@@ -116,7 +128,23 @@
       },
       addRadius(){
         this.radius+=10;
-      }
+      },
+      startSearch() {
+        let vm=this;
+        let map=this.amapManager.getMap();
+        this.toSearch=true;
+        AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
+          var poiPicker = new PoiPicker({
+              input: 'search', //输入框id
+              
+          });
+          //监听poi选中信息
+          poiPicker.on('poiPicked', function(poiResult) {
+            //用户选中的poi点信息
+            vm.center=[poiResult.item.location.lng,poiResult.item.location.lat]
+          });
+        });
+      },
     }
   };
 </script>
