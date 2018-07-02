@@ -33,8 +33,9 @@
     left: 20px;
     border: 1px solid grey;
   }
-  .search-tips{
-    height: 240px;
+  hr{
+    border-color: red;
+    border-style: dashed;
   }
 </style>
 

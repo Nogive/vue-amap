@@ -1,9 +1,7 @@
 <template>
   <div class="search-box">
-    <button @click="startSearch">POI选点（PoiPicker）</button>
-    <input type="text" class="search-input" v-show="showSearch" id="search" v-model="value">
-    <hr>
     <button @click="searchByPlaceSearch">placeSearch</button>
+    <input type="text" class="search-input" v-show="showSearch" id="search" v-model="value">
     <hr>
     <div class="amap-page-container">
       <el-amap 
@@ -36,6 +34,10 @@
   .search-tips{
     height: 240px;
   }
+  hr{
+    border-color: red;
+    border-style: dashed;
+  }
 </style>
 
 <script>
@@ -53,23 +55,6 @@
       };
     },
     methods: {
-      startSearch() {
-        let vm=this;
-        let map=this.amapManager.getMap();
-        this.showSearch=true;
-        AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
-          var poiPicker = new PoiPicker({
-              input: 'search', //输入框id
-              
-          });
-          //监听poi选中信息
-          poiPicker.on('poiPicked', function(poiResult) {
-            //用户选中的poi点信息
-            console.log(poiResult);
-            vm.center=[poiResult.item.location.lng,poiResult.item.location.lat]
-          });
-        });
-      },
       searchByPlaceSearch(){
         let vm=this;
         let map=this.amapManager.getMap();

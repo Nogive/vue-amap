@@ -25,6 +25,10 @@
   .toolbar{
     margin-top: 15px;
   }
+  hr{
+    border-color: red;
+    border-style: dashed;
+  }
 </style>
 
 <script>

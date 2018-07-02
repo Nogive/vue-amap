@@ -20,6 +20,10 @@
       width: 100%;
       height: 300px;
     }
+    hr{
+      border-color: red;
+      border-style: dashed;
+    }
   </style>
 
   <script>

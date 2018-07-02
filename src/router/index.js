@@ -9,6 +9,8 @@ import ui from "@/components/Ui";
 import search from "@/components/Search";
 //使用sdk进行搜索
 import searchBySdk from "@/components/SearchBySdk";
+//输入提示+搜索服务
+import searchByPois from "@/components/SearchByPois";
 //定位
 import position from "@/components/Position";
 //拖拽选点
@@ -52,6 +54,11 @@ export default new Router({
       path: "/drag",
       name: "drag",
       component: drag
+    },
+    {
+      path: "/searchByPois",
+      name: "searchByPois",
+      component: searchByPois
     }
   ]
 });
