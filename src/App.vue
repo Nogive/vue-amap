@@ -34,4 +34,7 @@ export default {
 hr{
   margin: 10px 0;
 }
+*{
+  box-sizing: border-box;
+}
 </style>

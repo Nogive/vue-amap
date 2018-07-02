@@ -1,9 +1,13 @@
 <template>
-  <div class="search-box">
-    <button @click="searchByPlaceSearch">placeSearch</button>
-    <input type="text" class="search-input" v-show="showSearch" id="search" v-model="value">
+  <div class="search-body">
+    <button @click="startSearch">搜索</button>
     <hr>
     <div class="amap-page-container">
+      <div class="search-box" v-if="showSearch">
+        <input type="text" class="search-input" id="search" v-model="searchKey">
+        <button @click="handleSearch">搜索</button>
+        <div class="tip-box" id="panel"></div>
+      </div>
       <el-amap 
         vid="amapDemo" 
         :center="center" 
@@ -15,7 +19,6 @@
         </el-amap-marker>
       </el-amap>
     </div>
-    <div id="panel"></div>
     <ul>
       <li v-for="item in result" :key="item.id">{{item.name}}</li>
     </ul>
@@ -27,12 +30,36 @@
     height: 300px;
     position: relative;
   }
-  .search-input {
-    border: 1px solid grey;
-    padding: 5px;
+  .search-box{
+    position: absolute;
+    z-index: 5;
+    width: 90%;
+    left: 5%;
+    top: 10px;
+    height: 30px;
   }
-  .search-tips{
-    height: 240px;
+  .search-box input{
+    float: left;
+    width: 80%;
+    height: 100%;
+    border: 1px solid #38f;
+    padding: 0 8px;
+  }
+  .search-box button{
+    float: left;
+    width: 20%;
+    height: 100%;
+    background: #38f;
+    border: 1px solid #38f;
+    color: #fff;
+  }
+  .tip-box{
+    width: 100%;
+    max-height:260px;
+    position: absolute;
+    top: 30px;
+    overflow-y: auto;
+    background-color: #fff;
   }
   hr{
     border-color: red;
@@ -45,28 +72,45 @@
   let amapManager=new AMapManager();
   export default {
     data() {
+      let vm=this;
       return {
         zoom: 16,
         center: [121.329402,31.228667],
         amapManager,
         result:[],
         showSearch:false,
-        value:''
+        searchKey:'',
+        placeSearch:null,
       };
     },
+    watch:{
+      searchKey(){
+        if(this.searchKey===''){
+          this.placeSearch.clear();
+        }
+      }
+    },
     methods: {
-      searchByPlaceSearch(){
+      startSearch(){
         let vm=this;
         let map=this.amapManager.getMap();
-        var placeSearch =new AMap.PlaceSearch({
-          extensions:'all',
-          map:map,
-          panel:'panel'
+        vm.showSearch=true;
+        AMap.service('AMap.PlaceSearch', () => {
+          let placeSearch = new AMap.PlaceSearch({
+            map: map,
+            panel: 'panel'
+          })
+          vm.placeSearch=placeSearch;
+          AMap.event.addListener(placeSearch, 'listElementClick', function(data){
+            vm.searchKey='';
+            vm.center=[data.data.location.lng,data.data.location.lat];
+          });
         })
-        placeSearch.search('上海',function(status,result){
-          console.log(status);
-          console.log(result);
-        });
+      },
+      handleSearch(){
+        if(this.searchKey){
+          this.placeSearch.search(this.searchKey);
+        }
       }
     }
   };
