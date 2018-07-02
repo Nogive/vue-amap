@@ -126,9 +126,9 @@
               placeSearchOptions: {
                 map: map,
                 pageSize: 10
-              },
-              suggestContainer:'searchTip',
-              searchResultsContainer:'searchTip'
+              },//地点搜索配置
+              suggestContainer:'searchTip',//输入提示显示DOM
+              searchResultsContainer:'searchTip'//搜索结果显示DOM
           });
           vm.poiPicker=poiPicker;
           //监听poi选中信息
@@ -138,8 +138,9 @@
             if (source !== 'search') {
                 poiPicker.searchByKeyword(poi.name);
             } else {
-              vm.center=[poiResult.item.location.lng,poiResult.item.location.lat];
               poiPicker.clearSearchResults();
+              vm.center=[poiResult.item.location.lng,poiResult.item.location.lat];
+              vm.address=poi.name;
               vm.searchKey="";
               vm.toSearch=false;
             }
